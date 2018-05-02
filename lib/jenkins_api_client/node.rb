@@ -143,7 +143,8 @@ module JenkinsApi
           :port => 22,
           :mode => "normal",
           :privatekey => "",
-          :credentialsId => ""
+          :credentialsId => "",
+          :sshHostKeyVerificationStrategy => "hudson.plugins.sshslaves.verifiers.NonVerifyingKeyVerificationStrategy"
         }
 
         params = default_params.merge(params)
@@ -175,7 +176,10 @@ module JenkinsApi
               "privatekey" => params[:privatekey],
               "credentialsId" => params[:credentialsId],
               "jvmOptions" => params[:jvmOptions],
-              "javaPath" => params[:javaPath]
+              "javaPath" => params[:javaPath],
+              "sshHostKeyVerificationStrategy" => {
+                "stapler-class" => params[:sshHostKeyVerificationStrategy]
+              }
             }
           }.to_json
         }
