@@ -354,6 +354,12 @@ module JenkinsApi
       @jenkins_version = response.headers['X-Jenkins']
       @hudson_version = response.headers['X-Hudson']
 
+      # CVE-2019-10384: Retrieve SESSIONID from server response if not yet done
+      unless (@cookies && @cookies.include?('JSESSIONID'))
+        server_cookies = response.headers['Set-Cookie'].map { |cookie| cookie.split(';')[0] }.join(';')
+        @cookies = "#{@cookies};#{server_cookies}"
+      end
+
       return response
     end
     protected :make_http_request
